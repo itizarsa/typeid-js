@@ -16,6 +16,7 @@ import {
   InvalidPrefixError,
   InvalidSuffixCharacterError,
   InvalidSuffixLengthError,
+  PrefixMismatchError,
 } from "../src/unboxed/error";
 
 describe("TypeId Functions", () => {
@@ -98,6 +99,15 @@ describe("TypeId Functions", () => {
       expect(() => {
         fromString(invalidStr);
       }).toThrowError(new InvalidSuffixLengthError(0));
+    });
+
+    it("should throw an error for TypeId string with prefix when there should be none", () => {
+      const prefix = "prefix";
+      const str = `${prefix}_00041061050r3gg28a1c60t3gf`;
+
+      expect(() => {
+        fromString(str);
+      }).toThrowError(new PrefixMismatchError("NONE", prefix));
     });
   });
 
